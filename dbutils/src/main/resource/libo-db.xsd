@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns="http://libo.com/db" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://libo.com/db">
+	
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace"/>
+	
+	<xs:annotation>
+		<xs:documentation><![CDATA[
+	LIBO DB Configuation Schema, version 1.0
+	Authors: libo
+		]]></xs:documentation>
+	</xs:annotation>
+	
+	<!-- 自定义数据类型：值不能为空 -->
+	<xs:simpleType name="d_required">
+		<xs:restriction base="xs:string">
+			<!-- 处理所有的空白字符 -->
+			<xs:whiteSpace value="collapse"/>
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<!-- 自定义数据类型：最小值1 -->
+	<xs:simpleType name="min_1">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<!-- 自定义数据类型：最小值0 -->
+	<xs:simpleType name="min_0">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	
+	<!-- 根元素 -->
+	<xs:element name="datasources">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="1" minOccurs="0" ref="constants"/>
+				<xs:element maxOccurs="unbounded" minOccurs="0" ref="datasource"/>
+				<xs:element maxOccurs="unbounded" minOccurs="0" ref="include"/>
+				<xs:element maxOccurs="unbounded" minOccurs="0" ref="link-mapping"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<!-- constants定义 -->
+	<xs:element name="constants">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="constant">
+					<xs:complexType>
+						<xs:attribute name="name" type="d_required" use="required"/>
+						<xs:attribute name="value" type="d_required" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	
+	<!-- datasource定义 -->
+	<xs:element name="datasource">
+		<xs:complexType>
+			<xs:all> 
+				<xs:element name="name" type="d_required"/>
+				<xs:element name="driver-class" type="d_required"/>
+				<xs:element name="driver-url" type="d_required"/>
+				<xs:element name="user" type="d_required"/>
+				<xs:element name="password" type="xs:string"/>
+				
+				<xs:element maxOccurs="1" minOccurs="0" name="max-connection-size" type="min_1"/>
+				<xs:element maxOccurs="1" minOccurs="0" name="min-connection-size" type="min_1"/>
+				<xs:element maxOccurs="1" minOccurs="0" name="init-connection-size" type="min_1"/>
+				
+				<xs:element maxOccurs="1" minOccurs="0" name="acquire-increment-size" type="min_1"/>
+				<xs:element maxOccurs="1" minOccurs="0" name="available-connection-size" type="min_0"/>
+				
+				<xs:element maxOccurs="1" minOccurs="0" name="max-connection-idletime" type="min_1"/>
+				<xs:element maxOccurs="1" minOccurs="0" name="max-connection-lifetime" type="min_1"/>
+				
+				<xs:element maxOccurs="1" minOccurs="0" name="idle-connection-test-period" type="min_0"/>
+				<xs:element maxOccurs="1" minOccurs="0" name="acquire-retry-attempts" type="min_0"/>
+				<xs:element maxOccurs="1" minOccurs="0" name="acquire-retry-delay" type="min_0"/>
+				
+				<xs:element maxOccurs="1" minOccurs="0" name="test-sql" type="xs:string"/>
+				<xs:element maxOccurs="1" minOccurs="0" name="test-connection-checkout" type="xs:boolean"/>
+				<xs:element maxOccurs="1" minOccurs="0" name="test-connection-checkin" type="xs:boolean"/>
+				
+				<xs:element maxOccurs="1" minOccurs="0" name="connection-timeout" type="min_0"/>
+				<xs:element maxOccurs="1" minOccurs="0" name="load-on-startup" type="xs:boolean"/>
+				<xs:element maxOccurs="1" minOccurs="0" name="show-sql" type="xs:boolean"/>
+				<xs:element maxOccurs="1" minOccurs="0" name="connection-provider" type="d_required"/>
+				
+				<xs:element maxOccurs="1" minOccurs="0" name="customize"/>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	
+	<!-- include定义 -->
+	<xs:element name="include">
+		<xs:complexType>
+			<xs:attribute name="datasource" type="d_required" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	
+	<!-- link-mapping定义 -->
+	<xs:element name="link-mapping">
+		<xs:complexType>
+			<xs:attribute name="name" type="d_required" use="required"/>
+			<xs:attribute name="linkto" type="d_required" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	
+</xs:schema>
