@@ -1,11 +1,13 @@
 package com.cherry.utils;
 
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -88,7 +90,7 @@ public final class PropertyUtils {
             if (CommonMethod.isNotEmpty(filePath)) {
                 File file = new File(filePath);
                 if (file.exists()) {
-                    InputStream instream = new FileInputStream(filePath);
+                	BufferedReader instream = new BufferedReader(new InputStreamReader(new FileInputStream(filePath),"UTF-8"));
                     this.properties = new Properties();
 
                     properties.load(instream);
