@@ -12,7 +12,6 @@
 		<module>utils</module>
 		<module>spring-plugin</module>
 		<module>web</module>
-		<module>dbutils</module>
     <module>socketCommon</module>
   </modules>
 	
